@@ -1,0 +1,17 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: result-vs
+spec:
+  host: result.od.ro
+#  tls:
+#    secret:
+  upstreams:
+  - name: result
+    service: result-service
+    port: 80
+    next-upstream: "error timeout http_404 http_500 http_502 http_503 http_504"
+  routes:
+  - path: /
+    action:
+      pass: result
